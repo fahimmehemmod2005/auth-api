@@ -110,8 +110,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     child: _media == null
                         ? const Icon(
-                            Icons.camera_alt_outlined,
-                            size: 30,
+                            Icons.person,
+                            size: 60,
                             color: Colors.black54,
                           )
                         : null,
