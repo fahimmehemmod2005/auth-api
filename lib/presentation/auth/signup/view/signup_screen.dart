@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:auth/core/routes/route_manager.dart';
 import 'package:auth/presentation/widgets/primary_button.dart';
 import 'package:auth/presentation/widgets/show_white_dialog.dart';
+import 'package:auth/presentation/widgets/text_input_field.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -121,35 +122,23 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(height: 10),
               const Text('Set a profile image'),
               const SizedBox(height: 20),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Name',
-                  hintText: 'Enter your name',
-                  border: OutlineInputBorder(),
-                ),
-              ),
+              TextInputField(mainLabel: 'Name', hintText: 'Enter your name'),
               const SizedBox(height: 10),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  hintText: 'Enter your email',
-                  border: OutlineInputBorder(),
-                ),
-              ),
+              TextInputField(mainLabel: 'Email', hintText: 'Enter your email'),
               const SizedBox(height: 10),
-              TextField(
+              TextInputField(
                 obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  hintText: 'Enter your password',
-                  border: OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.visibility_off_outlined),
-                ),
+                mainLabel: 'Password',
+                hintText: 'Enter your password',
+                suffixIcon: Icons.visibility_off_outlined,
               ),
               const SizedBox(height: 20),
-              PrimaryButton(label: 'Signup', onPressed: () {
-                Navigator.pushNamed(context, Routes.signupOtp);
-              }),
+              PrimaryButton(
+                label: 'Signup',
+                onPressed: () {
+                  Navigator.pushNamed(context, Routes.signupOtp);
+                },
+              ),
               10.verticalSpace,
             ],
           ),
