@@ -1,0 +1,37 @@
+class IconManager {
+  static String baseUrl = 'assets/icons';
+  static String logo = '$baseUrl/logo.png';
+  static String person = '$baseUrl/no_image.png';
+  static String notifications = '$baseUrl/notification.svg';
+  static String calender = '$baseUrl/calender.svg';
+  static String chat = '$baseUrl/chat.svg';
+  static String clock = '$baseUrl/clock.svg';
+  static String search = '$baseUrl/search.svg';
+  static String person_icon = '$baseUrl/person.svg';
+  static String bolt = '$baseUrl/bolt.svg';
+  static String card = '$baseUrl/card.svg';
+  static String settings = '$baseUrl/settings.svg';
+  static String logout = '$baseUrl/logout.svg';
+  static String calendar_filled = '$baseUrl/calendar_filled.svg';
+  static String edit = '$baseUrl/edit.svg';
+  static String arrow_down = '$baseUrl/arrow_down.svg';
+  static String tik = '$baseUrl/tik.svg';
+  static String notification_blue = '$baseUrl/notification_blue.svg';
+  static String security = '$baseUrl/security.svg';
+  static String shield_user = '$baseUrl/shield_user.svg';
+  static String faq = '$baseUrl/faq.svg';
+  static String help = '$baseUrl/help.svg';
+  static String home = '$baseUrl/home.svg';
+  static String bookings = '$baseUrl/bookings.svg';
+  static String analytics = '$baseUrl/analytics.svg';
+  static String profile = '$baseUrl/profile.svg';
+  static String musle = '$baseUrl/musle.svg';
+  static String calender_time = '$baseUrl/calender_time.svg';
+  static String apple = '$baseUrl/apple.svg';
+  static String google = '$baseUrl/google.svg';
+  static String fire = '$baseUrl/fire.svg';
+  static String deadlift = '$baseUrl/deadlift.svg';
+  static String run = '$baseUrl/run.svg';
+  static String cancel = '$baseUrl/cancel.svg';
+  static String medel = '$baseUrl/medel.svg';
+}

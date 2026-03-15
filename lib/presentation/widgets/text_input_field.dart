@@ -11,6 +11,9 @@ class TextInputField extends StatelessWidget {
   final IconData? suffixIcon;
   final double? borderRadius;
   final Color? fillColor;
+  final TextEditingController? controller;
+  final String? errorText;
+  final void Function()? suffixIconTap;
   const TextInputField({
     super.key,
     this.hintText,
@@ -21,6 +24,9 @@ class TextInputField extends StatelessWidget {
     this.mainLabel,
     this.borderRadius,
     this.fillColor,
+    this.controller,
+    this.errorText,
+    this.suffixIconTap,
   });
 
   @override
@@ -35,12 +41,15 @@ class TextInputField extends StatelessWidget {
           ),
         5.verticalSpace,
         TextFormField(
+          controller: controller,
           maxLines: maxLines,
           minLines: maxLines,
           obscureText: obscureText,
           style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
           decoration: InputDecoration(
-            suffixIcon: Icon(suffixIcon),
+            suffixIcon: GestureDetector(
+                onTap: suffixIconTap,
+                child: Icon(suffixIcon)),
             hintText: hintText,
             hintStyle: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w500),
             enabledBorder: OutlineInputBorder(
@@ -51,6 +60,7 @@ class TextInputField extends StatelessWidget {
               borderRadius: BorderRadius.circular(borderRadius ?? 12.r),
               borderSide: BorderSide(color: CupertinoColors.systemBlue),
             ),
+            errorText: errorText,
           ),
         ),
       ],

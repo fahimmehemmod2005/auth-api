@@ -1,91 +1,39 @@
 import 'dart:io';
-import 'package:auth/core/routes/route_manager.dart';
 import 'package:auth/presentation/widgets/primary_button.dart';
-import 'package:auth/presentation/widgets/show_white_dialog.dart';
 import 'package:auth/presentation/widgets/text_input_field.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../widgets/image_picker.dart';
 
-class SignupScreen extends StatefulWidget {
+class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({super.key});
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  ConsumerState<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
-  File? _media;
-  final ImagePicker _picker = ImagePicker();
+class _SignupScreenState extends ConsumerState<SignupScreen> {
+  final _name = TextEditingController();
+  final _email = TextEditingController();
+  final _device = TextEditingController();
+  final _password = TextEditingController();
 
-  Future<void> _pickImage(ImageSource source) async {
-    try {
-      final XFile? image = await _picker.pickImage(
-        source: source,
-        imageQuality: 80,
-      );
-
-      if (image != null) {
-        setState(() {
-          _media = File(image.path);
-        });
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print("Image pick error: $e");
-      }
-    }
-  }
-
-  void _showImagePickerOption() {
-    showWhiteDialog(
-      context: context,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            leading: Icon(Icons.photo_outlined),
-            title: Text(
-              "Gallery",
-              style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
-            ),
-            onTap: () {
-              Navigator.pop(context);
-              _pickImage(ImageSource.gallery);
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.camera_alt_outlined),
-            title: Text(
-              "Camera",
-              style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
-            ),
-            onTap: () {
-              Navigator.pop(context);
-              _pickImage(ImageSource.camera);
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.image_not_supported_outlined),
-            title: Text(
-              "Remove",
-              style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
-            ),
-            onTap: () {
-              Navigator.pop(context);
-              setState(() {
-                _media = null;
-              });
-            },
-          ),
-        ],
-      ),
-    );
+  @override
+  void dispose() {
+    _name.dispose();
+    _email.dispose();
+    _device.dispose();
+    _password.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final imageProvider = ref.watch(fileImagePickerProvider);
+    final String? imagePath = imageProvider.singleImage?.path;
+    final profileFile = ref.read(fileImagePickerProvider).singleImage;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -95,21 +43,21 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(height: 20),
               Center(
                 child: GestureDetector(
-                  onTap: _showImagePickerOption,
+                  onTap: () => _showPickerOptions(context),
                   child: Container(
                     height: 100.h,
                     width: 100.w,
                     decoration: BoxDecoration(
                       color: Colors.grey.shade300,
                       shape: BoxShape.circle,
-                      image: _media != null
+                      image: imagePath != null
                           ? DecorationImage(
-                              image: FileImage(_media!),
+                              image: FileImage(File(imagePath)),
                               fit: BoxFit.cover,
                             )
                           : null,
                     ),
-                    child: _media == null
+                    child: imagePath == null
                         ? const Icon(
                             Icons.person,
                             size: 60,
@@ -122,26 +70,77 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(height: 10),
               const Text('Set a profile image'),
               const SizedBox(height: 20),
-              TextInputField(mainLabel: 'Name', hintText: 'Enter your name'),
-              const SizedBox(height: 10),
-              TextInputField(mainLabel: 'Email', hintText: 'Enter your email'),
+              TextInputField(
+                mainLabel: 'Name',
+                hintText: 'Enter your name',
+                controller: _name,
+              ),
               const SizedBox(height: 10),
               TextInputField(
-                obscureText: true,
+                mainLabel: 'Email',
+                hintText: 'Enter your email',
+                controller: _email,
+              ),
+              const SizedBox(height: 10),
+              TextInputField(
+                mainLabel: 'Device',
+                hintText: 'Enter your device',
+                controller: _device,
+              ),
+              const SizedBox(height: 10),
+              TextInputField(
                 mainLabel: 'Password',
                 hintText: 'Enter your password',
+                controller: _password,
                 suffixIcon: Icons.visibility_off_outlined,
               ),
               const SizedBox(height: 20),
-              PrimaryButton(
-                label: 'Signup',
-                onPressed: () {
-                  Navigator.pushNamed(context, Routes.signupOtp);
-                },
-              ),
+              PrimaryButton(label: 'Signup', onPressed: () {}),
               10.verticalSpace,
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  void _showPickerOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.black,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+      ),
+      builder: (context) => SafeArea(
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo_library, color: Colors.white),
+              title: const Text(
+                'Gallery',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                ref
+                    .read(fileImagePickerProvider.notifier)
+                    .pickImage(ImageSource.gallery);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.camera_alt, color: Colors.white),
+              title: const Text(
+                'Camera',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                ref
+                    .read(fileImagePickerProvider.notifier)
+                    .pickImage(ImageSource.camera);
+                Navigator.pop(context);
+              },
+            ),
+          ],
         ),
       ),
     );

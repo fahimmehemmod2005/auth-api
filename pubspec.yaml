@@ -36,10 +36,18 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_riverpod: ^3.2.0
   pinput: ^6.0.1
-  image_picker: ^1.2.1
+  image_picker:
+  file_picker:
   dio: ^5.9.0
   google_fonts: ^7.0.0
   flutter_screenutil: ^5.9.3
+  shared_preferences:
+  fluttertoast:
+  intl_phone_field:
+  cached_network_image:
+  table_calendar:
+  geolocator:
+  geocoding:
 
 dev_dependencies:
   flutter_test:
